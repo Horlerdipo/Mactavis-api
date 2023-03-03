@@ -32,6 +32,20 @@ class ProductController extends Controller
         ]);
     }
 
+    public function getProduct($id): JsonResponse
+    {
+        $product = $this->productService->getProduct($id);
+        if (!$product) {
+            return abort(404);
+        }
+
+        return response()->json(data: [
+            "status" => true,
+            "data" => $product,
+        ]);
+
+    }
+
     public function getBrands(): JsonResponse
     {
         $brands = $this->productService->getAllBrands();

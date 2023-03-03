@@ -11,11 +11,22 @@ use App\Models\Wishlist;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductService
 {
 
-    const PRODUCT_PER_PAGE = 6;
+    const PRODUCT_PER_PAGE = 20;
+
+    public function getProduct($productId): Builder|Model|null
+    {
+        return Product::with([
+            "category",
+            "brand",
+            "media",
+        ])->where("id", $productId)->first();
+    }
+
 
     public function getAllProducts($sortBy = null): Paginator
     {
