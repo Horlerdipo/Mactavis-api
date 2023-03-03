@@ -21,17 +21,12 @@ class CartService
     public function addItemToCart(array $attributes, bool $event, bool $addOriginalBox = false)
     {
         $previousItem = $this->cart->getItemInCart(['id' => $attributes['id']]);
+
         if (empty($previousItem)) {
-
-            session([request()->cookie('phone_number') . '_items_in_cart' => 1]);
             $cart = $this->cart->addItemToCart($attributes, $event);
-
         } else {
 
             $attributes['quantity'] = $this->cart->getOneItemInCart(key($previousItem))->getQuantity() + $attributes["quantity"];
-            session()->increment('count', $attributes["quantity"]);
-//            session([request()->cookie('phone_number') . '_items_in_cart' => $this->cart->getCartDetails()->quantities_sum]);
-
             $cart = $this->cart->updateItemInCart(key($previousItem), $attributes);
         }
 
@@ -180,84 +175,6 @@ class CartService
             "message" => "Text Generated",
             "redirect_url" => $redirectUrl,
         ];
-
-    }
-
-    public function inquire($productId): array
-    {
-        $product = Product::query()->with(['media'])->findOrFail($productId);
-        $message = "Hello, I would like to inquire about the following product:";
-        $image = $product->getFirstMediaUrl() ?? "";
-        $route = route("dashboard.products.product", $product->product_id);
-
-        $message .= "\n\nProduct Name: {$product->name}\n";
-        $message .= "Product ID: {$product->product_id}\n";
-        $message .= "Quantity: {$product->quantity}\n";
-        $message .= "Product Image: {$image}\n";
-        $message .= "Product Url: {$route}\n";
-        $message .= "Unit Price: Rs.{$product->offer_price}\n";
-
-        $redirectUrl = "https://wa.me/" . config("app.admin_number") . "?text=" . urlencode($message);
-        return [
-            "status" => true,
-            "message" => "Text Generated",
-            "redirect_url" => $redirectUrl,
-        ];
-    }
-
-    public function fetchBuyerAddresses($userId): Collection|array
-    {
-        return Address::query()->where("user_id", $userId)->get();
-    }
-
-    public function fetchBuyerAddress($addressId, $userId): Builder|Model|null
-    {
-        return Address::query()->where(function ($query) use ($userId, $addressId) {
-            $query->where("id", $addressId)->where("user_id", $userId);
-        })->first();
-    }
-
-    public function addAddress(array $data): bool
-    {
-        $bool = false;
-        try {
-
-            $data['user_id'] = getCookieUser()->id;
-            Address::query()->create($data);
-            $bool = true;
-
-        } catch (Exception $exception) {
-            log_error(exception: $exception, abort: false);
-        }
-        return $bool;
-
-    }
-
-    public function deleteAddress($addressId, $userId): array
-    {
-        $response = [
-            "status" => false,
-            "message" => "Something went wrong,please try again"
-        ];
-
-        try {
-
-            $return = Address::query()->where(function ($query) use ($userId, $addressId) {
-                $query->where("id", $addressId)->where("user_id", $userId);
-            })->delete();
-
-            if ($return) {
-                $response['status'] = true;
-                $response['message'] = "Address deleted";
-            } else {
-                $response['status'] = false;
-                $response['message'] = "Unable to delete address";
-            }
-
-        } catch (Exception $exception) {
-            log_error(exception: $exception, abort: false);
-        }
-        return $response;
 
     }
 }

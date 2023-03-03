@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,8 +30,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('addresses', AddressController::class);
 
     Route::apiResource('wishlists', WishlistController::class)->except([
-            'show'
+        'show'
     ]);
+
+    Route::controller(ProductController::class)->prefix("products")->group(function () {
+        Route::get("/", "getAllProducts");
+        Route::get("/brands", "getBrands");
+        Route::get("/categories", "getCategories");
+    });
 
     Route::get('/me', function (Request $request) {
         return $request->user();

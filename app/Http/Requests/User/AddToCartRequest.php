@@ -27,6 +27,7 @@ class AddToCartRequest extends FormRequest
         return [
             'quantity' => [
                 'numeric',
+                "required",
                 "min:1",
             ],
             'include_box' => [
