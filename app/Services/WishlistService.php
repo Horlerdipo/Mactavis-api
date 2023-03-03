@@ -6,7 +6,6 @@ use App\Models\Wishlist;
 use Exception;
 use Illuminate\Contracts\Pagination\Paginator;
 
-//TODO: Add helper file for log_error
 class WishlistService
 {
     const WISHLIST_PER_PAGE = 10;
