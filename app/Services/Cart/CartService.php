@@ -2,18 +2,11 @@
 
 namespace App\Services\Cart;
 
-
 use App\Enums\CartEnum;
-use App\Models\Address;
-use App\Models\Product;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class CartService
 {
-
     public function __construct(public CartInterface $cart)
     {
     }
@@ -25,8 +18,7 @@ class CartService
         if (empty($previousItem)) {
             $cart = $this->cart->addItemToCart($attributes, $event);
         } else {
-
-            $attributes['quantity'] = $this->cart->getOneItemInCart(key($previousItem))->getQuantity() + $attributes["quantity"];
+            $attributes['quantity'] = $this->cart->getOneItemInCart(key($previousItem))->getQuantity() + $attributes['quantity'];
             $cart = $this->cart->updateItemInCart(key($previousItem), $attributes);
         }
 
@@ -37,10 +29,9 @@ class CartService
                 'title' => 'Original Box Cost',
                 'value' => $attributes['extra_info']['box_price'] * $attributes['quantity'],
                 'rules' => [
-                    'enable' => true
-                ]
+                    'enable' => true,
+                ],
             ]);
-
         } else {
             $cart->clearActions();
         }
@@ -48,17 +39,17 @@ class CartService
         return $cart;
     }
 
-
     public function removeItemFromCart($identifier): bool
     {
         $bool = true;
         try {
             $this->cart->removeItemFromCart($identifier);
-            session()->put(request()->cookie('phone_number') . '_items_in_cart', $this->cart->getCartDetails()->quantities_sum);
+            session()->put(request()->cookie('phone_number').'_items_in_cart', $this->cart->getCartDetails()->quantities_sum);
         } catch (Exception $exception) {
             log_error(exception: $exception, abort: false);
             $bool = false;
         }
+
         return $bool;
     }
 
@@ -72,14 +63,14 @@ class CartService
         $previousItem = $this->cart->getItemInCart(['id' => $identifier]);
         $bool = false;
 
-        if (!empty($previousItem)) {
+        if (! empty($previousItem)) {
             $bool = true;
             $previousItem = $this->cart->getOneItemInCart(key($previousItem));
         }
 
         return [
-            "status" => $bool,
-            "items" => $previousItem,
+            'status' => $bool,
+            'items' => $previousItem,
         ];
     }
 
@@ -88,42 +79,41 @@ class CartService
         $bool = true;
         try {
             $this->cart->clearCart();
-            session()->forget(request()->cookie('phone_number') . '_items_in_cart');
+            session()->forget(request()->cookie('phone_number').'_items_in_cart');
         } catch (Exception $exception) {
             log_error(exception: $exception, abort: false);
             $bool = false;
         }
+
         return $bool;
     }
 
     public function checkout($addressId, $userId, array $senderInfo = []): array
     {
-
         $cartItems = $this->fetchItemsInCart();
 
         $buyerAddress = $this->fetchBuyerAddress($addressId, $userId);
 
         if (is_null($buyerAddress)) {
             return [
-                "status" => false,
-                "message" => "Please select a valid delivery address",
-                "redirect_url" => null,
+                'status' => false,
+                'message' => 'Please select a valid delivery address',
+                'redirect_url' => null,
             ];
         }
 
         if ($cartItems->quantities_sum < 1) {
             return [
-                "status" => false,
-                "message" => "You have no item in your cart",
-                "redirect_url" => null,
+                'status' => false,
+                'message' => 'You have no item in your cart',
+                'redirect_url' => null,
             ];
         }
 
-        $message = "Hello, I would like to purchase the following:";
+        $message = 'Hello, I would like to purchase the following:';
         foreach ($cartItems->items as $cartItem) {
-
             $image = $cartItem->extra_info->images;
-            $route = route("dashboard.products.product", $cartItem->extra_info->productId);
+            $route = route('dashboard.products.product', $cartItem->extra_info->productId);
             $message .= "\n\n*PRODUCT INFORMATION* \n";
             $message .= "Product Name: {$cartItem->title}\n";
             $message .= "Product ID: {$cartItem->extra_info->productId}\n";
@@ -156,7 +146,7 @@ class CartService
         $message .= "Contact Number: {$buyerAddress->contact_number}\n";
 
         //Optional Sender Info for resellers
-        if (!empty($senderInfo)) {
+        if (! empty($senderInfo)) {
             $message .= "\n*Sender Information* \n";
             if (array_key_exists('sender_name', $senderInfo)) {
                 $message .= "Sender Name: {$senderInfo['sender_name']}\n";
@@ -169,12 +159,12 @@ class CartService
             }
         }
 
-        $redirectUrl = "https://wa.me/" . config("app.admin_number") . "?text=" . urlencode($message);
-        return [
-            "status" => true,
-            "message" => "Text Generated",
-            "redirect_url" => $redirectUrl,
-        ];
+        $redirectUrl = 'https://wa.me/'.config('app.admin_number').'?text='.urlencode($message);
 
+        return [
+            'status' => true,
+            'message' => 'Text Generated',
+            'redirect_url' => $redirectUrl,
+        ];
     }
 }

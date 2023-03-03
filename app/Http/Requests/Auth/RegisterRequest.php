@@ -26,28 +26,28 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "first_name" => ["required"],
-            "last_name" => ["required"],
-            "email" => [
-                "required",
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'email' => [
+                'required',
                 Rule::unique('users'),
             ],
-            "phone_number" => [
-                "required",
+            'phone_number' => [
+                'required',
                 Rule::unique('users'),
             ],
             'role' => [
-                "required",
-                new Enum(UserType::class)
+                'required',
+                new Enum(UserType::class),
             ],
             'referred_by' => [
-                "required",
-                Rule::exists("users", "phone_number")
+                'required',
+                Rule::exists('users', 'phone_number'),
             ],
             'password' => [
                 'required',
                 'confirmed',
-                Password::min(8)
+                Password::min(8),
             ],
         ];
     }

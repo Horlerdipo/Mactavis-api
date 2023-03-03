@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum ProductStatus: string
 {
-    case AVAILABLE = "available";
-    case UNAVAILABLE = "unavailable";
+    case AVAILABLE = 'available';
+    case UNAVAILABLE = 'unavailable';
 
     public function types(): string
     {
@@ -27,15 +27,16 @@ enum ProductStatus: string
 
     public static function getAllValues(): array
     {
-        return array_column(DeliveryStatus::cases(), 'value',1);
+        return array_column(DeliveryStatus::cases(), 'value', 1);
     }
 
     public static function getOptionsForFilament(): array
     {
         $array = [];
-        foreach (DeliveryStatus::cases() as $case){
+        foreach (DeliveryStatus::cases() as $case) {
             $array[$case->value] = ucfirst($case->value);
         }
+
         return $array;
     }
 }

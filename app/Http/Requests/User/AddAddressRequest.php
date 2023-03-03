@@ -8,8 +8,6 @@ class AddAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -24,29 +22,29 @@ class AddAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => [
-                "required",
+            'name' => [
+                'required',
             ],
-            "address" => [
-                "required"
+            'address' => [
+                'required',
             ],
-            "landmark" => [
-                "required"
+            'landmark' => [
+                'required',
             ],
-            "state" => [
-                "required"
+            'state' => [
+                'required',
             ],
-            "city" => [
-                "required"
+            'city' => [
+                'required',
             ],
-            "pin_code" => [
-                "required"
+            'pin_code' => [
+                'required',
             ],
-            "email_id" => [
-                "required"
+            'email_id' => [
+                'required',
             ],
-            "contact_number" => [
-                "required"
+            'contact_number' => [
+                'required',
             ],
         ];
     }

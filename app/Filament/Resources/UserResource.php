@@ -4,10 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\UserType;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Closure;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -17,8 +15,6 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -45,22 +41,21 @@ class UserResource extends Resource
                 Select::make('role')
                     ->options(UserType::getOptionsForFilament())->columnSpan(12),
 
-                Select::make("referred_by")->label("Sponsor Phone ")->searchable()->required()->columnSpan(12)
-                    ->getSearchResultsUsing(fn(string $search) => User::query()->where(function ($query) use ($search) {
+                Select::make('referred_by')->label('Sponsor Phone ')->searchable()->required()->columnSpan(12)
+                    ->getSearchResultsUsing(fn (string $search) => User::query()->where(function ($query) use ($search) {
                         $query
                             ->where('first_name', 'like', "%{$search}%")
                             ->orWhere('phone_number', 'like', "%{$search}%")
                             ->orWhere('last_name', 'like', "%{$search}%");
-
                     })->limit(20)->pluck('phone_number', 'id'))
                     ->reactive()
-                    ->afterStateUpdated(fn($state, Closure $set) => $set('title', User::query()->find($state)?->name))
-                    ->hidden(fn(string $context) => $context == "edit"),
+                    ->afterStateUpdated(fn ($state, Closure $set) => $set('title', User::query()->find($state)?->name))
+                    ->hidden(fn (string $context) => $context == 'edit'),
 
                 TextInput::make('title')
                     ->label('Sponsor Name')->columnSpan(12)
                     ->disabled()
-                    ->hidden(fn(string $context) => $context == "edit"),
+                    ->hidden(fn (string $context) => $context == 'edit'),
 
                 Toggle::make('active'),
 
@@ -81,7 +76,7 @@ class UserResource extends Resource
                         'secondary' => static fn ($state): bool => $state === UserType::RESELLER->value,
                     ]),
                 TextColumn::make('address')->searchable(),
-                TextColumn::make("referral.name")->label("Sponsor")
+                TextColumn::make('referral.name')->label('Sponsor')
                     ->searchable(),
 
             ])

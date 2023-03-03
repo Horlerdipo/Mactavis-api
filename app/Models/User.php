@@ -8,9 +8,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -57,7 +55,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected function name(): Attribute
     {
         return Attribute::get(
-            get: fn($value, $attributes) => $attributes["first_name"] . " " . $attributes["last_name"]
+            get: fn ($value, $attributes) => $attributes['first_name'].' '.$attributes['last_name']
         );
     }
 

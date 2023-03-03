@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-
-
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use Filament\Forms\Components\FileUpload;
@@ -34,15 +32,15 @@ class ProductResource extends Resource
 
                 TextInput::make('name')->label('Product Name')->required()->columnSpan(12),
 
-                Select::make("brand_id")->label("Brand")->relationship("brand", "name")->required()->columnSpan(6),
+                Select::make('brand_id')->label('Brand')->relationship('brand', 'name')->required()->columnSpan(6),
 
-                Select::make("category_id")->label("Category")->relationship("category", "name")->required()->columnSpan(6),
+                Select::make('category_id')->label('Category')->relationship('category', 'name')->required()->columnSpan(6),
 
                 Section::make('Media')
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('media')
                             ->directory('medias')
-                            ->visibility("public")
+                            ->visibility('public')
                             ->imageResizeTargetWidth('900')
                             ->imageResizeTargetHeight('900')
                             ->multiple()
@@ -57,13 +55,13 @@ class ProductResource extends Resource
                     'codeBlock',
                 ])->columnSpan(12),
 
-                TextInput::make("retail_price")->label("Retail Price")->required()->numeric()->columnSpan(6),
+                TextInput::make('retail_price')->label('Retail Price')->required()->numeric()->columnSpan(6),
 
-                TextInput::make("offer_price")->label("Offer Price")->required()->numeric()->columnSpan(6),
+                TextInput::make('offer_price')->label('Offer Price')->required()->numeric()->columnSpan(6),
 
-                TextInput::make("reseller_price")->label("Reseller Price")->required()->numeric()->columnSpan(6),
+                TextInput::make('reseller_price')->label('Reseller Price')->required()->numeric()->columnSpan(6),
 
-                TextInput::make("box_price")->label("Original Box Price")->required()->numeric()->columnSpan(6),
+                TextInput::make('box_price')->label('Original Box Price')->required()->numeric()->columnSpan(6),
             ]);
     }
 
@@ -71,20 +69,20 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                SpatieMediaLibraryImageColumn::make('media')->url(fn(Product $record): string => $record->getFirstMediaUrl())
+                SpatieMediaLibraryImageColumn::make('media')->url(fn (Product $record): string => $record->getFirstMediaUrl())
                     ->openUrlInNewTab(),
                 TextColumn::make('product_id')->searchable()->copyable()
                     ->copyMessage('Product ID copied')
                     ->copyMessageDuration(1500),
                 TextColumn::make('name')->searchable(),
-                TextColumn::make('category.name')->label("Category Name")->searchable(),
-                TextColumn::make('brand.name')->label("Brand Name")->searchable(),
-                TextColumn::make('retail_price')->prefix("Rs."),
-                TextColumn::make('offer_price')->prefix("Rs."),
-                TextColumn::make('reseller_price')->prefix("Rs."),
-                TextColumn::make('box_price')->prefix("Rs."),
+                TextColumn::make('category.name')->label('Category Name')->searchable(),
+                TextColumn::make('brand.name')->label('Brand Name')->searchable(),
+                TextColumn::make('retail_price')->prefix('Rs.'),
+                TextColumn::make('offer_price')->prefix('Rs.'),
+                TextColumn::make('reseller_price')->prefix('Rs.'),
+                TextColumn::make('box_price')->prefix('Rs.'),
                 TextColumn::make('quantity'),
-                TextColumn::make('video_url')->url(fn(Product $record) => $record->video_url)
+                TextColumn::make('video_url')->url(fn (Product $record) => $record->video_url)
                     ->openUrlInNewTab(),
             ])
             ->filters([

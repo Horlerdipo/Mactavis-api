@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum SortBy: string
 {
-    case ALPHABETICAL_ASC = "a-z";
-    case ALPHABETICAL_DESC = "z-a";
+    case ALPHABETICAL_ASC = 'a-z';
+    case ALPHABETICAL_DESC = 'z-a';
     case PRICE_ASC = 'low_price';
     case PRICE_DESC = 'high_price';
 
@@ -39,9 +39,10 @@ enum SortBy: string
     public static function getOptionsForFilament(): array
     {
         $array = [];
-        foreach (SortBy::cases() as $case){
+        foreach (SortBy::cases() as $case) {
             $array[$case->value] = ucfirst($case->value);
         }
+
         return $array;
     }
 }

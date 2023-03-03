@@ -8,26 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string("address")->nullable()->after("phone_number");
-            $table->boolean("active")->default(true)->after("password");
+            $table->string('address')->nullable()->after('phone_number');
+            $table->boolean('active')->default(true)->after('password');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['address','active']);
+            $table->dropColumn(['address', 'active']);
         });
     }
 };

@@ -13,7 +13,7 @@ class CartServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(CartInterface::class, function($app) {
+        $this->app->singleton(CartInterface::class, function ($app) {
             return new LaravelCart();
         });
     }

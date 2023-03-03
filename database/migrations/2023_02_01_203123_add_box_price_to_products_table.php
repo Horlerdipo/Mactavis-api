@@ -8,26 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string("box_price")->after("retail_price");
+            $table->string('box_price')->after('retail_price');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn([
-                "box_price"
+                'box_price',
             ]);
         });
     }

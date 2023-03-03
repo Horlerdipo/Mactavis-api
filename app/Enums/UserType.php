@@ -4,9 +4,8 @@ namespace App\Enums;
 
 enum UserType: string
 {
-
-    case RESELLER = "reseller";
-    case CUSTOMER = "customer";
+    case RESELLER = 'reseller';
+    case CUSTOMER = 'customer';
 
     public function types(): string
     {
@@ -37,6 +36,7 @@ enum UserType: string
         foreach (UserType::cases() as $case) {
             $array[$case->value] = ucfirst($case->value);
         }
+
         return $array;
     }
 }

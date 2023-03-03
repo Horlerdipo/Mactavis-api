@@ -2,41 +2,36 @@
 
 namespace App\Services;
 
-
 use App\Enums\SortBy;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Wishlist;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductService
 {
-
     const PRODUCT_PER_PAGE = 20;
 
     public function getProduct($productId): Builder|Model|null
     {
         return Product::with([
-            "category",
-            "brand",
-            "media",
-        ])->where("id", $productId)->first();
+            'category',
+            'brand',
+            'media',
+        ])->where('id', $productId)->first();
     }
-
 
     public function getAllProducts($sortBy = null): Paginator
     {
         $products = Product::query()->with(['category', 'brand', 'media']);
 
         $products = match ($sortBy) {
-            SortBy::ALPHABETICAL_DESC->value => $products->orderBy("name", "desc"),
-            SortBy::PRICE_DESC->value => $products->orderBy("offer_price", "desc"),
-            SortBy::PRICE_ASC->value => $products->orderBy("offer_price"),
-            default => $products->orderBy("name"),
+            SortBy::ALPHABETICAL_DESC->value => $products->orderBy('name', 'desc'),
+            SortBy::PRICE_DESC->value => $products->orderBy('offer_price', 'desc'),
+            SortBy::PRICE_ASC->value => $products->orderBy('offer_price'),
+            default => $products->orderBy('name'),
         };
 
         return $products->simplePaginate(self::PRODUCT_PER_PAGE)->withQueryString();
@@ -45,13 +40,13 @@ class ProductService
     public function getProductsByCategory($categoryId, $sortBy = null): Paginator
     {
         $products = Product::query()->with(['category', 'brand', 'media'])
-            ->where("category_id", $categoryId);
+            ->where('category_id', $categoryId);
 
         $products = match ($sortBy) {
-            SortBy::ALPHABETICAL_DESC->value => $products->orderBy("name", "desc"),
-            SortBy::PRICE_DESC->value => $products->orderBy("offer_price", "desc"),
-            SortBy::PRICE_ASC->value => $products->orderBy("offer_price"),
-            default => $products->orderBy("name"),
+            SortBy::ALPHABETICAL_DESC->value => $products->orderBy('name', 'desc'),
+            SortBy::PRICE_DESC->value => $products->orderBy('offer_price', 'desc'),
+            SortBy::PRICE_ASC->value => $products->orderBy('offer_price'),
+            default => $products->orderBy('name'),
         };
 
         return $products->simplePaginate(self::PRODUCT_PER_PAGE)->withQueryString();
@@ -59,15 +54,14 @@ class ProductService
 
     public function getProductsByBrand($brandId, $sortBy = null): Paginator
     {
-
         $products = Product::query()->with(['category', 'brand', 'media'])
-            ->where("brand_id", $brandId);
+            ->where('brand_id', $brandId);
 
         $products = match ($sortBy) {
-            SortBy::ALPHABETICAL_DESC->value => $products->orderBy("name", "desc"),
-            SortBy::PRICE_DESC->value => $products->orderBy("offer_price", "desc"),
-            SortBy::PRICE_ASC->value => $products->orderBy("offer_price"),
-            default => $products->orderBy("name"),
+            SortBy::ALPHABETICAL_DESC->value => $products->orderBy('name', 'desc'),
+            SortBy::PRICE_DESC->value => $products->orderBy('offer_price', 'desc'),
+            SortBy::PRICE_ASC->value => $products->orderBy('offer_price'),
+            default => $products->orderBy('name'),
         };
 
         return $products->simplePaginate(self::PRODUCT_PER_PAGE)->withQueryString();
@@ -81,10 +75,10 @@ class ProductService
             ->orWhere('description', 'LIKE', "%{$searchParam}%");
 
         $products = match ($sortBy) {
-            SortBy::ALPHABETICAL_DESC->value => $products->orderBy("name", "desc"),
-            SortBy::PRICE_DESC->value => $products->orderBy("offer_price", "desc"),
-            SortBy::PRICE_ASC->value => $products->orderBy("offer_price"),
-            default => $products->orderBy("name"),
+            SortBy::ALPHABETICAL_DESC->value => $products->orderBy('name', 'desc'),
+            SortBy::PRICE_DESC->value => $products->orderBy('offer_price', 'desc'),
+            SortBy::PRICE_ASC->value => $products->orderBy('offer_price'),
+            default => $products->orderBy('name'),
         };
 
         return $products->simplePaginate(self::PRODUCT_PER_PAGE)->withQueryString();
@@ -92,11 +86,11 @@ class ProductService
 
     public function getAllCategories(): Paginator
     {
-        return Category::query()->where("status", true)->simplePaginate(self::PRODUCT_PER_PAGE);
+        return Category::query()->where('status', true)->simplePaginate(self::PRODUCT_PER_PAGE);
     }
 
     public function getAllBrands(): Paginator
     {
-        return Brand::query()->where("status", true)->simplePaginate(self::PRODUCT_PER_PAGE);
+        return Brand::query()->where('status', true)->simplePaginate(self::PRODUCT_PER_PAGE);
     }
 }

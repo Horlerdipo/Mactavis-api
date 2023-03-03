@@ -4,7 +4,6 @@ namespace App\Services\Cart;
 
 interface CartInterface
 {
-
     public function setUp();
 
     public function addItemToCart(array $attributes = [], bool $withEvent = true);

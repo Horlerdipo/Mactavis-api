@@ -11,15 +11,15 @@ class Address extends Model
     use HasFactory;
 
     protected $fillable = [
-        "name",
-        "user_id",
-        "address",
-        "landmark",
-        "city",
-        "state",
-        "pin_code",
-        "email_id",
-        "contact_number",
+        'name',
+        'user_id',
+        'address',
+        'landmark',
+        'city',
+        'state',
+        'pin_code',
+        'email_id',
+        'contact_number',
     ];
 
     public function user(): BelongsTo

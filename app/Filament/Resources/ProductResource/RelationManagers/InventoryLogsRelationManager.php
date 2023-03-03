@@ -3,23 +3,14 @@
 namespace App\Filament\Resources\ProductResource\RelationManagers;
 
 use App\Enums\InventoryAction;
-use App\Models\Inventory;
 use App\Models\Product;
-use App\Models\Vendor;
-use Closure;
-use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class InventoryLogsRelationManager extends RelationManager
 {
@@ -53,27 +44,27 @@ class InventoryLogsRelationManager extends RelationManager
                         'success' => InventoryAction::ADDITION->value,
                         'danger' => InventoryAction::SUBTRACTION->value,
                     ]),
-                TextColumn::make('docket_number')->default("None"),
-                TextColumn::make('courier_partner')->default("None"),
+                TextColumn::make('docket_number')->default('None'),
+                TextColumn::make('courier_partner')->default('None'),
                 TextColumn::make('updated_at')->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-//                Tables\Actions\CreateAction::make()->mutateFormDataUsing(function (array $data, RelationManager $livewire): array {
-//                    $data['product_id'] = $livewire->ownerRecord->id;
-//                    $data['product_code'] = $livewire->ownerRecord->product_id;
-//                    $data['product_name'] = $livewire->ownerRecord->name;
-//                    return $data;
-//                }),
+                //                Tables\Actions\CreateAction::make()->mutateFormDataUsing(function (array $data, RelationManager $livewire): array {
+                //                    $data['product_id'] = $livewire->ownerRecord->id;
+                //                    $data['product_code'] = $livewire->ownerRecord->product_id;
+                //                    $data['product_name'] = $livewire->ownerRecord->name;
+                //                    return $data;
+                //                }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label("Add Docket Number"),
-//                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label('Add Docket Number'),
+                //                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-//                Tables\Actions\DeleteBulkAction::make(),
+                //                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

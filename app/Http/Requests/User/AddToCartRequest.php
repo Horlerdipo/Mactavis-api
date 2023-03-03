@@ -8,8 +8,6 @@ class AddToCartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -27,13 +25,13 @@ class AddToCartRequest extends FormRequest
         return [
             'quantity' => [
                 'numeric',
-                "required",
-                "min:1",
+                'required',
+                'min:1',
             ],
             'include_box' => [
                 'string',
-                'nullable'
-            ]
+                'nullable',
+            ],
         ];
     }
 }

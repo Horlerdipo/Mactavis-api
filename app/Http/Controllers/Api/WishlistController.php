@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AddWishlistRequest;
-use App\Http\Resources\WishlistCollection;
 use App\Services\WishlistService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
-
     public function __construct(private readonly WishlistService $wishlistService)
     {
     }
@@ -23,10 +20,11 @@ class WishlistController extends Controller
     public function index(): JsonResponse
     {
         $wishlists = $this->wishlistService->getWishlists(Auth::guard('sanctum')->id());
+
         return response()->json(data: [
-            "status" => true,
-            "message" => "Wishlists Fetched Successfully",
-            "data" => $wishlists,
+            'status' => true,
+            'message' => 'Wishlists Fetched Successfully',
+            'data' => $wishlists,
         ]);
     }
 
@@ -35,22 +33,21 @@ class WishlistController extends Controller
      */
     public function store(AddWishlistRequest $request): JsonResponse
     {
-        $response = $this->wishlistService->addProductToWishlist($request->post('product_id'),Auth::guard('sanctum')->id());
+        $response = $this->wishlistService->addProductToWishlist($request->post('product_id'), Auth::guard('sanctum')->id());
 
         if ($response['status']) {
             return response()->json(data: [
-                "status" => true,
-                "message" => "Wishlist created Successfully",
-                "data" => null,
+                'status' => true,
+                'message' => 'Wishlist created Successfully',
+                'data' => null,
             ], status: 201);
         }
 
         return response()->json(data: [
-            "status" => false,
-            "message" => "Something went wrong,please try again",
-            "data" => null,
+            'status' => false,
+            'message' => 'Something went wrong,please try again',
+            'data' => null,
         ], status: 500);
-
     }
 
     /**
@@ -62,16 +59,16 @@ class WishlistController extends Controller
 
         if ($response['status']) {
             return response()->json(data: [
-                "status" => true,
-                "message" => $response['message'],
-                "data" => null,
+                'status' => true,
+                'message' => $response['message'],
+                'data' => null,
             ]);
         }
 
         return response()->json(data: [
-            "status" => false,
-            "message" => "Something went wrong,please try again",
-            "data" => null,
+            'status' => false,
+            'message' => 'Something went wrong,please try again',
+            'data' => null,
         ], status: 500);
     }
 }
