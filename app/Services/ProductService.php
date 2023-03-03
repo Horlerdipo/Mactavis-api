@@ -24,37 +24,6 @@ class ProductService
         ])->where("product_id", $productId)->first();
     }
 
-    public function addProductToWishlist($productId, $userId): Builder|Model|null
-    {
-        return Wishlist::query()->create([
-            "product_id" => $productId,
-            "user_id" => $userId,
-        ]);
-    }
-
-    public function removeProductFromWishlist($productId, $userId): int|null
-    {
-        return Wishlist::query()->where(function ($query) use ($productId, $userId) {
-            $query->where("user_id", $userId)->where("product_id", $productId);
-        }
-        )->delete();
-    }
-
-    public function getWishlist($productId, $userId): Model|Builder|null
-    {
-        return Wishlist::query()->where(function ($query) use ($productId, $userId) {
-            $query->where("user_id", $userId)->where("product_id", $productId);
-        }
-        )->first();
-    }
-
-    public function getWishlists($userId): Paginator
-    {
-        return Wishlist::query()->with(["product"])
-            ->where("user_id", $userId)
-            ->simplePaginate(self::WISHLIST_PER_PAGE);
-    }
-
     public function findProductImageByUUID($mediaId): Model|Builder|null
     {
         return Media::query()->where("uuid", $mediaId)->first();

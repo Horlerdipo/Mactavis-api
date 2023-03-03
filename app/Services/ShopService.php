@@ -49,9 +49,6 @@ class ShopService
 
     public function getProductsByBrand($brandId, $sortBy = null): Paginator
     {
-//        $products = Product::query()->whereHas('category', function (Builder $query) use ($brandId) {
-//            $query->where('brand_id', $brandId);
-//        });
 
         $products = Product::query()->with(['category', 'brand', 'media'])
             ->where("brand_id", $brandId);

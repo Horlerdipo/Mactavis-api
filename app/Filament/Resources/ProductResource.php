@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\MediaType;
-use App\Enums\ProductStatus;
-use App\Filament\Resources\ProductResource\RelationManagers;
+
+
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
-use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
@@ -19,7 +17,6 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 
@@ -108,7 +105,6 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\InventoryLogsRelationManager::class,
         ];
     }
 

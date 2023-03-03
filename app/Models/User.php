@@ -68,17 +68,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessFilament(): bool
     {
-        return Admin::query()->where("email", $this->email)->exists();
-    }
-
-    public function referral(): BelongsTo
-    {
-        return $this->belongsTo(User::class, "referred_by");
-    }
-
-    public function referree(): HasMany
-    {
-        return $this->hasMany(User::class);
+        return true;
     }
 
     public function addresses(): HasMany
